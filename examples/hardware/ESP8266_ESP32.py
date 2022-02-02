@@ -25,37 +25,36 @@ WIFI_PASS = 'YourWiFiPassword'
 
 BLYNK_AUTH = 'YourAuthToken'
 
-print("Connecting to WiFi...")
 wifi = network.WLAN(network.STA_IF)
-wifi.active(True)
-wifi.connect(WIFI_SSID, WIFI_PASS)
-while not wifi.isconnected():
-    pass
+if not wifi.isconnected():
+    print("Connecting to WiFi...")
+    wifi.active(True)
+    wifi.connect(WIFI_SSID, WIFI_PASS)
+    while not wifi.isconnected():
+        pass
 
 print('IP:', wifi.ifconfig()[0])
 
-print("Connecting to Blynk...")
 blynk = BlynkLib.Blynk(BLYNK_AUTH)
 
-@blynk.ON("connected")
+@blynk.on("connected")
 def blynk_connected(ping):
     print('Blynk ready. Ping:', ping, 'ms')
+
+@blynk.on("disconnected")
+def blynk_disconnected():
+    print('Blynk disconnected')
 
 def runLoop():
     while True:
         blynk.run()
         machine.idle()
 
-# Run blynk in the main thread:
+# Run blynk in the main thread
 runLoop()
 
-# Or, run blynk in a separate thread (unavailable for esp8266):
+# You can also run blynk in a separate thread (ESP32 only)
 #import _thread
 #_thread.stack_size(5*1024)
 #_thread.start_new_thread(runLoop, ())
 
-
-# Note:
-# Threads are currently unavailable on some devices like esp8266
-# ESP32_psRAM_LoBo has a bit different thread API:
-# _thread.start_new_thread("Blynk", runLoop, ())

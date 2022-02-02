@@ -1,4 +1,7 @@
-# Python client for Blynk
+# Python client for Blynk IoT
+
+**Note:** The library has been updated for Blynk 2.0.  
+Please remain on `v0.2.0` for legacy Blynk.
 
 [![GitHub version](https://img.shields.io/github/release/vshymanskyy/blynk-library-python.svg)](https://github.com/vshymanskyy/blynk-library-python/releases/latest)
 [![GitHub download](https://img.shields.io/github/downloads/vshymanskyy/blynk-library-python/total.svg)](https://github.com/vshymanskyy/blynk-library-python/releases/latest)
@@ -20,18 +23,14 @@ Blynk is **the most popular IoT platform** used by design studios, makers, educa
 
 ## Download
 
-**Blynk App: 
-[<img src="https://cdn.rawgit.com/simple-icons/simple-icons/develop/icons/googleplay.svg" width="18" height="18" /> Google Play](https://play.google.com/store/apps/details?id=cc.blynk) | 
-[<img src="https://cdn.rawgit.com/simple-icons/simple-icons/develop/icons/apple.svg" width="18" height="18" /> App Store](https://itunes.apple.com/us/app/blynk-control-arduino-raspberry/id808760481?ls=1&mt=8)**
-
-**Blynk [Server](https://github.com/blynkkk/blynk-server)**
+**Blynk Mobile App:
+[<img src="https://cdn.rawgit.com/simple-icons/simple-icons/develop/icons/googleplay.svg" width="18" height="18" /> Google Play](https://play.google.com/store/apps/details?id=cloud.blynk) | 
+[<img src="https://cdn.rawgit.com/simple-icons/simple-icons/develop/icons/apple.svg" width="18" height="18" /> App Store](https://apps.apple.com/us/app/blynk-iot/id1559317868)**
 
 ## Documentation
 Social: [Webpage](http://www.blynk.cc) / [Facebook](http://www.fb.com/blynkapp) / [Twitter](http://twitter.com/blynk_app) / [Kickstarter](https://www.kickstarter.com/projects/167134865/blynk-build-an-app-for-your-arduino-project-in-5-m/description)  
-Help Center: http://help.blynk.cc  
-Documentation: http://docs.blynk.cc/#blynk-firmware  
+Documentation: https://docs.blynk.io  
 Community Forum: http://community.blynk.cc  
-Examples Browser: http://examples.blynk.cc  
 Blynk for Business: http://www.blynk.io
 
 ## Usage example
@@ -65,10 +64,10 @@ while True:
 - `virtual_write`
 - `sync_virtual`
 - `set_property`
-- `notify`, `tweet`
 - `log_event`
-- events: `Vn`, `readVn`, `connected`, `disconnected`
-- can run on embedded hardware, like `ESP8266`, `ESP32`, or `OpenWrt`
+- events: `Vn`, `connected`, `disconnected`, `invalid_auth`
+- `TCP` and secure `TLS/SSL` connection support
+- can run on embedded hardware, like `ESP8266`, `ESP32`, `W600` or `OpenWrt`
 
 ## Ubuntu/Linux/Raspberry Pi installation
 
@@ -76,10 +75,11 @@ while True:
 pip install blynk-library-python
 ```
 
-## ESP8266/ESP32 installation
+For **Blynk.Edgent Dynamic Provisioning**, please see `examples/Edgent_Linux_RPi`
+
+## ESP32/ESP8266 installation
 
 - Get the latest [MicroPython](https://micropython.org/download) firmware and flash it to your board  
-  **Note:** for ESP32 you can also try [LoBo](https://github.com/loboris/MicroPython_ESP32_psRAM_LoBo/wiki/firmwares) firmware
 - Edit [ESP8266_ESP32.py](examples/hardware/ESP8266_ESP32.py) example (put your `auth token` and wifi credentials)
 - Use `ampy` or any other method to transfer files to the device  
     ```sh
@@ -90,6 +90,10 @@ pip install blynk-library-python
     ```
   **Note:** LoBo firmware stores files uder `/flash` directory, use `ampy mkdir /flash/lib` and so on
 - Open device terminal and reboot the board (or type `execfile('main.py')`)
+- For ESP8266, you may need to disable secure connection using:
+    ```py
+    blynk = BlynkLib.Blynk('YourAuthToken', insecure=True)
+    ```
 
 ## PyCom installation
 - This should work with WiPy 1.0, 2.0, 3.0, LoPy, SiPy, GPy, FiPy
@@ -104,7 +108,7 @@ __________
 * [Node.js, Espruino, Browsers](https://github.com/vshymanskyy/blynk-library-js)
 * [OpenWrt packages](https://github.com/vshymanskyy/blynk-library-openwrt)
 * [MBED](https://developer.mbed.org/users/vshymanskyy/code/Blynk/)
-* [Node-RED](https://www.npmjs.com/package/node-red-contrib-blynk-ws)
+* [Node-RED for Blynk IoT](https://flows.nodered.org/node/node-red-contrib-blynk-iot)
 * [LabVIEW](https://github.com/juncaofish/NI-LabVIEWInterfaceforBlynk)
 * [C#](https://github.com/sverrefroy/BlynkLibrary)
 

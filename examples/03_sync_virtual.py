@@ -9,12 +9,6 @@ projects by simply dragging and dropping widgets.
   Blynk community:            http://community.blynk.cc
   Social networks:            http://www.fb.com/blynkapp
                               http://twitter.com/blynk_app
-
-This example shows how to add a custom terminal widget.
-
-In your Blynk App project:
-  Add a Terminal widget, bind it to Virtual Pin V3.
-  Run the App (green triangle in the upper right corner).
 """
 
 import BlynkLib
@@ -24,20 +18,16 @@ BLYNK_AUTH = 'YourAuthToken'
 # initialize Blynk
 blynk = BlynkLib.Blynk(BLYNK_AUTH)
 
-@blynk.VIRTUAL_WRITE(3)
-def v3_write_handler(value):
-    # execute the command echo it back
-    blynk.virtual_write(3, 'Command: ' + value + '\n')
-    blynk.virtual_write(3, 'Result: ')
-    try:
-        blynk.virtual_write(3, str(eval(value)))
-    except:
-        try:
-            exec(value)
-        except Exception as e:
-            blynk.virtual_write(3, 'Exception:\n  ' + repr(e))
-    finally:
-        blynk.virtual_write(3, '\n')
+@blynk.on("V*")
+def blynk_handle_vpins(pin, value):
+    print("V{} value: {}".format(pin, value))
+
+@blynk.on("connected")
+def blynk_connected():
+    # You can also use blynk.sync_virtual(pin)
+    # to sync a specific virtual pin
+    print("Updating V1,V2,V3 values from the server...")
+    blynk.sync_virtual(1,2,3)
 
 while True:
     blynk.run()
